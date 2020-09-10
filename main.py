@@ -1,6 +1,17 @@
 from flask import Flask, render_template,url_for,flash,redirect
 import os
+<<<<<<< HEAD
 <<<<<<< HEAD:flaskblog.py
+=======
+<<<<<<<< HEAD:main.py
+from forms import RegistrationForm,LoginForm,ProfileForm
+from flask_sqlalchemy import SQLAlchemy
+from models import db ,Lawyer
+from  werkzeug.security import generate_password_hash , check_password_hash
+from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
+app = Flask(__name__) 
+========
+>>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 app = Flask(__name__) # so that flask knows where to look for your templates and static foles
 #we made an 'app' variable and set it to  an instance of the flask class
@@ -10,6 +21,7 @@ app = Flask(__name__) # so that flask knows where to look for your templates and
 
 #posts is a list of dictionaries
 #each dictionary represents a blog post
+<<<<<<< HEAD
 =======
 from forms import RegistrationForm,LoginForm,ProfileForm
 from flask_sqlalchemy import SQLAlchemy
@@ -18,6 +30,9 @@ from  werkzeug.security import generate_password_hash , check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
 app = Flask(__name__) 
 >>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f:main.py
+=======
+>>>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f:flaskblog.py
+>>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
