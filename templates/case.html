@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+	<form method="POST" action="">
+		{{form.hidden_tag()}}
+		<fieldset  class="form-group">
+			<legend class="border-botton mb-4">Join today
+			</legend>	
+			<div class="form-group">
+				{{form.Name.label(class="form-control-label")}}
+				{% if form.Name.errors %}
+					{{form.Name(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.Name.errors %}
+							 <span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.Name(class="form-control form-control-lg")}}
+				{% endif %}
+				
+			</div>	
+			<div class="form-group">
+				{{form.Day.label(class="form-control-label")}}
+				{% if form.Day.errors %}
+					{{form.Day(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.Day.errors %}
+							 <span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.Day(class="form-control form-control-lg")}}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{form.Month.label(class="form-control-label")}}
+				{% if form.Month.errors %}
+					{{form.Month(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.Month.errors %}
+							 <span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.Month(class="form-control form-control-lg")}}
+				{% endif %}
+			</div>
+			
+			<div class="form-group">
+				{{form.Year.label(class="form-control-label")}}
+				{% if form.Year.errors %}
+					{{form.Year(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.Year.errors %}
+							 <span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.Year(class="form-control form-control-lg")}}
+				{% endif %}
+			</div>	
+			<div class="form-group">
+				{{form.Bio.label(class="form-control-label")}}
+				{% if form.Bio.errors %}
+					{{form.Bio(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.Bio.errors %}
+							 <span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.Bio(class="form-control form-control-lg")}}
+				{% endif %}
+			</div>		
+	<div class="form-group">
+		{{form.submit(class="btn btn-outline-info")}}
+				
+	</div>
+				
+	</form>
+			
+
+</div>
+	<div>
+
+
+		<div class="border-top pt-3">
+			<small class="text-muted">
+				Add files related to case?
+				<a class="ml-2" href="https://drive.google.com/drive"> Add</a>
+				<!--put url for uploading files -->
+			</small>
+		</div>
+	</div>
+
+{% endblock content %}      

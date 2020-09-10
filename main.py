@@ -1,5 +1,6 @@
 from flask import Flask, render_template,url_for,flash,redirect
 import os
+<<<<<<< HEAD:flaskblog.py
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 app = Flask(__name__) # so that flask knows where to look for your templates and static foles
 #we made an 'app' variable and set it to  an instance of the flask class
@@ -9,9 +10,28 @@ app = Flask(__name__) # so that flask knows where to look for your templates and
 
 #posts is a list of dictionaries
 #each dictionary represents a blog post
+=======
+from forms import RegistrationForm,LoginForm,ProfileForm
+from flask_sqlalchemy import SQLAlchemy
+from models import db ,Lawyer
+from  werkzeug.security import generate_password_hash , check_password_hash
+from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
+app = Flask(__name__) 
+>>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f:main.py
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.sqlite3' 
+db.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_lawyer(lawyer_id):
+	return Lawyer.query.get(int(lawyer_id))
+
 
 post =[
 {
@@ -51,19 +71,25 @@ def about():
 def register():
 	form=RegistrationForm()
 	if form.validate_on_submit():
-		flash(f'Account created for {form.username.data}','success')
-		return redirect(url_for('home'))
+		hashed_password = generate_password_hash(form.password.data , method='sha256')
+		new_user = Lawyer(username=form.username.data , email_id = form.email.data  , password = hashed_password)
+		db.session.add(new_user)
+		db.session.commit()
+		flash('Registation Successfully')
 	return render_template('Registrationform.html',title='register',form=form)
 
 @app.route('/login',methods=['GET','POST'])
 def login():
 	form=LoginForm()
 	if form.validate_on_submit():
-		if form.email.data == 'shlokaprincess101@gmail.com' and form.password.data == 'zaq1xsw2':
-			flash(f' {form.email.data} has logged in','success')
-			return redirect(url_for('home'))
-		else:
-			flash('unsucessful login, please check email and password','danger')
+		user = Lawyer.query.filter_by(email_id=form.email.data).first()
+		if user :
+			if check_password_hash(user.password,form.password.data):
+				login_user(user,remember = form.remember.data)
+				flash(f'Login successfull')
+				return render_template('layout.html')
+						
+
 	
 	return render_template('login.html',title='login',form=form)
 
@@ -75,6 +101,11 @@ def profile():
 		return redirect(url_for('home'))
 	return render_template('profile.html',title='login',form=form)
 
+ 
+# @app.route('/dashboard')
+# @login_required
+# def dashboard():
+#     return render_template('/Enterpage/Enterpage.html')
 
 @app.route('/cases',methods=['GET','POST'])
 def cases():
@@ -101,8 +132,8 @@ def cases():
  # if its a=Flask(__name__) .. then FLASK_A
 
 if __name__=='__main__':
+	db.create_all(app=app)
 	app.run(debug=True)
-
 
 #template inheritance so that we dont have to repeaat code again and again
 #a block is the part which the child overrides
