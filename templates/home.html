@@ -5,11 +5,12 @@
 	<article class="media content-section">
 	  <div class="media-body">
 	    <div class="article-metadata">
-	      	<h2><a class="mr-2" href="#">{{ case.name }}</a></h2>
+	      	<h2><a class="mr-2" href="{{ url_for('case_display',case_id=case.id)}}">{{ case.name }}</a></h2>
 	      <small class="text-muted">{{ case.day }}/{{ case.month }}/{{ case.year }}</small>
-	    </div>
-	    
-	    <p class="article-content">{{ case.bio }}</p>
+		</div>
+		<p class="article-content">{{ case.bio }}</p>
+		
+		
 	  </div>
 	</article>
 	{% endfor %} 

@@ -63,7 +63,7 @@ def about():
 @app.route('/home')
 def home():
     user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
-    return render_template('home.html',title='hola',user_cases=user_cases)
+    return render_template('home.html',title='HOME',user_cases=user_cases)
 
 
 @app.route('/register',methods=['GET','POST'])
@@ -137,7 +137,12 @@ def cases():
 		flash(f'Case added for {form.Name.data}','success')
 		return redirect(url_for('home'))
 	return render_template('case.html',title='case',form=form)
+	
 
+@app.route('/case_display/<int:case_id>')
+def case_display(case_id):
+	case=Lawyer_case.query.get_or_404(case_id)
+	return render_template('case_display.html',case=case)
 
 
 #@app.route('/profile')
