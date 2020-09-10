@@ -1,18 +1,11 @@
-from flask import Flask, render_template,url_for,flash,redirect
+from flask import Flask, render_template,url_for,flash,redirect,session,sessions,abort
 import os
-<<<<<<< HEAD
-<<<<<<< HEAD:flaskblog.py
-=======
-<<<<<<<< HEAD:main.py
-from forms import RegistrationForm,LoginForm,ProfileForm
 from flask_sqlalchemy import SQLAlchemy
-from models import db ,Lawyer
+from models import db ,Lawyer,Lawyer_case
 from  werkzeug.security import generate_password_hash , check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
-app = Flask(__name__) 
-========
->>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
+from werkzeug.utils import secure_filename
 app = Flask(__name__) # so that flask knows where to look for your templates and static foles
 #we made an 'app' variable and set it to  an instance of the flask class
 #decorators are used to add functionality to ur already existing functions
@@ -21,23 +14,13 @@ app = Flask(__name__) # so that flask knows where to look for your templates and
 
 #posts is a list of dictionaries
 #each dictionary represents a blog post
-<<<<<<< HEAD
-=======
-from forms import RegistrationForm,LoginForm,ProfileForm
-from flask_sqlalchemy import SQLAlchemy
-from models import db ,Lawyer
-from  werkzeug.security import generate_password_hash , check_password_hash
-from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
-app = Flask(__name__) 
->>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f:main.py
-=======
->>>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f:flaskblog.py
->>>>>>> c5ca5fdc5e8665c928783ee6114c8ee83de98a2f
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.sqlite3' 
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif','.pdf','.txt','.doc','.docx']
 db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -69,17 +52,18 @@ post =[
 #<!--codeblock is used again to show end of the for loop by {% %} -->
 
 
-@app.route('/home')
+@app.route('/about')
 @app.route('/')
-def home():
-    return render_template('home.html',posts=post) #whatever vairable 'here posts' we 
+def about():
+    return render_template('about.html',posts=post) #whatever vairable 'here posts' we 
     #pass into the braces.. we will have access to it in our templates
     # you could do return '''<!doctype html>
     #<html code here>'''
 
-@app.route('/about')
-def about():
-    return render_template('about.html',title='hola')
+@app.route('/home')
+def home():
+    user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
+    return render_template('home.html',title='hola',user_cases=user_cases)
 
 
 @app.route('/register',methods=['GET','POST'])
@@ -101,6 +85,7 @@ def login():
 		if user :
 			if check_password_hash(user.password,form.password.data):
 				login_user(user,remember = form.remember.data)
+				session['user_id'] = user.id
 				flash(f'Login successfull')
 				return render_template('layout.html')
 						
@@ -123,9 +108,32 @@ def profile():
 #     return render_template('/Enterpage/Enterpage.html')
 
 @app.route('/cases',methods=['GET','POST'])
+@login_required
 def cases():
 	form=CaseForm()
 	if form.validate_on_submit():
+		name = form.Name.data
+		day = form.Day.data
+		month = form.Month.data
+		year = form.Year.data
+		bio = form.Bio.data
+		lawyer_id = session['user_id']
+		case=Lawyer_case(name=name,day=day,month=month,year=year,lawyer_id=lawyer_id,bio=bio)
+		case_file = form.case_file.data
+		if case_file:
+			case_file_name = secure_filename(case_file.filename)
+			if case_file_name != '':
+				file_ext = os.path.splitext(case_file_name)[1]
+				if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+					abort(400)
+				case_file.save(os.path.join(app.config['UPLOAD_FOLDER'], case_file_name))
+				case.case_file = url_for('static',filename='uploads/'+case_file_name)
+		else:
+			case.case_file = None
+		
+		db.session.add(case)
+		db.session.commit()
+
 		flash(f'Case added for {form.Name.data}','success')
 		return redirect(url_for('home'))
 	return render_template('case.html',title='case',form=form)

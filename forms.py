@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,IntegerField,BooleanField,FileField
+from wtforms import StringField,PasswordField,SubmitField,IntegerField,BooleanField,FileField,FormField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 class RegistrationForm(FlaskForm):
@@ -36,10 +36,15 @@ class LoginForm(FlaskForm):
 	remember = BooleanField('remember me')
 	submit=SubmitField('Sign in')
 
+class File_upload(FlaskForm):
+	case_file = FileField('Case File')
+    	
+
 class CaseForm(FlaskForm):
 	Name= StringField('Name', validators=[DataRequired(),Length(min=2,max=25)])
 	Day=IntegerField('Day (Eg: 01)',validators=[DataRequired()])
 	Month=IntegerField('Month (Eg:01 for Jan)',validators=[DataRequired()])
 	Year=IntegerField('Month (Eg:2001)',validators=[DataRequired()])
 	Bio=StringField('Summary of case ', validators=[DataRequired(),Length(min=2,max=200)])
+	case_file = FileField('Case File')
 	submit=SubmitField('Add case')
