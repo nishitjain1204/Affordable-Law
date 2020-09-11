@@ -4,8 +4,7 @@
 	<form method="POST" action="" enctype="multipart/form-data">
 		{{form.hidden_tag()}}
 		<fieldset  class="form-group">
-			<legend class="border-botton mb-4">Add your caase details
-			</legend>	
+			<legend class="border-botton mb-4">{{ legend }}</legend>
 			<div class="form-group">
 				{{form.Name.label(class="form-control-label")}}
 				{% if form.Name.errors %}
@@ -76,7 +75,8 @@
 				<br>
 
 				<div class="form-group">
-					{{form.case_file.label(class="form-control-label")}}
+					{{form.case_file.label(class="form-control-label" )}}
+						<p class="form-control-label">Uploaded file : {{filename if filename}}</p>
 					{% if form.case_file.errors %}
 						{{form.case_file(class="form-control form-control-lg is-invalid")}}
 							<div class="invalid-feedback">
