@@ -59,7 +59,8 @@
 	  <div class="card-body">
 		<h5 class="card-title">Not finding good cases ?</h5>
 		<p class="card-text">We got you covered.We provide a conection to the world as well as an excellent file management system for your legal files.</p>
-		<button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
+		<form action="{{ url_for('register')}}" method="GET">
+		<button type="submit" class="btn btn-lg btn-block btn-primary">Get started</button></form>
 	  </div>
 	</div>
 	<div class="card shadow">

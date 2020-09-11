@@ -105,10 +105,6 @@ def profile():
 	return render_template('profile.html',title='login',form=form)
 
  
-# @app.route('/dashboard')
-# @login_required
-# def dashboard():
-#     return render_template('/Enterpage/Enterpage.html')
 
 @app.route('/cases',methods=['GET','POST'])
 @login_required

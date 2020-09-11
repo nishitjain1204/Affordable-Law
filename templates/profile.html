@@ -61,6 +61,7 @@
                     {{ form.Notworking(class="form-check-input") }}
                     {{ form.Notworking.label(class="form-check-label") }}
                 </div>
+                <br>
                 <div class="form-group">
                     {{ form.Linkedin.label(class="form-control-label") }}
                     {% if form.Linkedin.errors %}
@@ -190,6 +191,19 @@
                         </div>
                     {% else %}
                         {{ form.number(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.profilephoto.label(class="form-control-label") }}
+                    {% if form.profilephoto.errors %}
+                        {{ form.profilephoto(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.profilephoto.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.profilephoto(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
  
