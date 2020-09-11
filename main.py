@@ -1,4 +1,4 @@
-from flask import Flask, render_template,url_for,flash,redirect,session,sessions,abort
+from flask import Flask, render_template,url_for,flash,redirect,session,sessions,abort,request
 import os
 import re
 from flask_sqlalchemy import SQLAlchemy
@@ -76,7 +76,7 @@ def register():
 		new_user = Lawyer(username=form.username.data , email_id = form.email.data  , password = hashed_password)
 		db.session.add(new_user)
 		db.session.commit()
-		flash('Registation Successfully')
+		flash('Registation Successfull','success')
 	return render_template('Registrationform.html',title='register',form=form)
 
 @app.route('/login',methods=['GET','POST'])
@@ -88,7 +88,7 @@ def login():
 			if check_password_hash(user.password,form.password.data):
 				login_user(user,remember = form.remember.data)
 				session['user_id'] = user.id
-				flash(f'Login successfull')
+				flash(f'Login successfull','success')
 				return redirect(url_for('home'))
 						
 
@@ -153,11 +153,7 @@ def case_update(case_id):
 	if case.lawyer_id != session['user_id']:
 		abort(403)
 	form=CaseForm()
-	form.Name.data = case.name
-	form.Day.data = case.day
-	form.Month.data = case.month
-	form.Year.data = case.year
-	form.Bio.data = case.bio
+	
 	
 	# form.case_file.data = open(os.path.join(app.config['UPLOAD_FOLDER'],filename[1]),'r+')
 	if form.validate_on_submit():
@@ -176,13 +172,32 @@ def case_update(case_id):
 					abort(400)
 				case_file.save(os.path.join(app.config['UPLOAD_FOLDER'], case_file_name))
 				case.case_file = url_for('static',filename='uploads/'+case_file_name)
-		# else:
-		# 	case.case_file = None
 		db.session.commit()
 		flash('Case Updated','success')
-	return render_template('case.html',title='UPDATE CASE',form=form,legend='UPDATE CASE')
+		return redirect(url_for('home'))
 
+	elif request.method == 'GET':
+    	
+		form.Name.data = case.name
+		form.Day.data = case.day
+		form.Month.data = case.month
+		form.Year.data = case.year
+		form.Bio.data = case.bio
+    	
+		
+		
+	return render_template('case.html',title='UPDATE CASE',form=form,legend='UPDATE CASE',warning='this will overwrite the previously uploaded file')
 
+@app.route('/case_display/<int:case_id>/delete', methods = ['POST'])
+@login_required
+def delete_case(case_id):
+	case=Lawyer_case.query.get_or_404(case_id)
+	if case.lawyer_id != session['user_id']:
+		abort(403)
+	db.session.delete(case)
+	db.session.commit()
+	flash('Your case has been deleted ','success')
+	return redirect(url_for('home'))
 
 
     

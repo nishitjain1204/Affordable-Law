@@ -47,4 +47,4 @@ class CaseForm(FlaskForm):
 	Year=IntegerField('Month (Eg:2001)',validators=[DataRequired()])
 	Bio=StringField('Summary of case ', validators=[DataRequired(),Length(min=2,max=200)])
 	case_file = FileField('Case File')
-	submit=SubmitField('Add case')
+	submit=SubmitField()

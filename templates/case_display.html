@@ -8,14 +8,37 @@
 	      <small class="text-muted">{{ case.day }}/{{ case.month }}/{{ case.year }}</small>
         </div>
         <p class="article-content">{{ case.bio }}</p>
-        
-        <p class="article-content"><a class="mr-2" href='{{ case.case_file}}' target="_blank"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+       
+        <p class="article-content">Download Case File &nbsp; <a class="mr-2" href='{{ case.case_file}}' target="_blank"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
             <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-          </svg></a></p>
+		  </svg></a></p>
+		  <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('case_update',case_id=case.id) }}">Update</a>
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+          </div>
 	    
 	    
 	  </div>
 	</article>
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="deleteModalLabel">Delete Case?</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <form action="{{ url_for('delete_case',case_id=case.id)}}" method="POST">
+				<input class="btn btn-danger" type="submit" value="Delete">
+			  </form>
+			</div>
+		  </div>
+		</div>
+	  </div>
 
 {% endblock content %}         
