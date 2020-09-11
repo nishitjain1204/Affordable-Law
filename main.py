@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from models import db ,Lawyer,Lawyer_case
 from  werkzeug.security import generate_password_hash , check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
+from flask_login import login_user, current_user, logout_user, login_required
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 from werkzeug.utils import secure_filename
 app = Flask(__name__) # so that flask knows where to look for your templates and static foles
@@ -199,7 +200,24 @@ def delete_case(case_id):
 	flash('Your case has been deleted ','success')
 	return redirect(url_for('home'))
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('about'))
 
+@app.route("/account")
+@login_required
+def account():
+
+    return '''
+	{% extends layout.html %}
+	{% block content %}
+	<h1> Account page </h1>
+	{% endblock content %}
+
+
+	'''
     
  
 
