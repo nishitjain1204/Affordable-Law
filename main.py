@@ -104,6 +104,10 @@ def profile():
 		return redirect(url_for('home'))
 	return render_template('profile.html',title='login',form=form)
 
+
+@app.route('/profile_display',methods=['GET','POST'])
+def profile_display():
+    return render_template ('profile_display.html')
  
 
 @app.route('/cases',methods=['GET','POST'])
