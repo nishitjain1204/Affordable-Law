@@ -70,53 +70,46 @@
 						</div>
 					{% else %}
 						{{form.Bio(class="form-control form-control-lg")}}
-				{% endif %}
+				{% endif %}</div>
 
 				<br>
 
 				<div class="form-group">
-					{{form.case_file.label(class="form-control-label")}}
+					{{form.Profilephoto.label(class="form-control-label")}}
 					{% if warning %}
 					<p class="form-control-label" style = 'color:brown' >{{ warning }}</p>
 					{% endif %}
 					{% if filename %}
 						<p class="form-control-label">Uploaded file : {{filename }}</p>
 						{% endif %}
-					{% if form.case_file.errors %}
-						{{form.case_file(class="form-control form-control-lg is-invalid",label = 'Upload File')}}
+					{% if form.Profilephoto.errors %}
+						{{form.Profilephoto(class="form-control form-control-lg is-invalid",label = 'Upload File')}}
 							<div class="invalid-feedback">
-								{% for error in form.case_file.errors %}
+								{% for error in form.Profilephoto.errors %}
 								 <span>{{error}}</span>
 								{% endfor %}
 							</div>
 						{% else %}
-							{{form.case_file(class="form-control form-control-lg")}}
+							{{form.Profilephoto(class="form-control form-control-lg")}}
 							
 
 					{% endif %}
+				</div>
 
 
 				
-			</div>		
+			</div>	
+		</fieldset>	
 	<div class="form-group">
 		{{form.submit(class="btn btn-outline-info", value = 'Submit')}}
 				
 	</div>
+
 				
 	</form>
 			
 
 </div>
-	<div>
-
-
-		<div class="border-top pt-3">
-			<small class="text-muted">
-				Add files related to case?
-				<a class="ml-2" href="https://drive.google.com/drive"> Add</a>
-				<!--put url for uploading files -->
-			</small>
-		</div>
-	</div>
+	
 
 {% endblock content %}      

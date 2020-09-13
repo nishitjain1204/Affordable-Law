@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="POST" action="">
+        <form method="POST" action=""enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Profile</legend>
-                <fieldset class="form-group">
+                
                 <div class="form-group">
                     {{ form.FirstName.label(class="form-control-label") }}
                     {% if form.FirstName.errors %}
@@ -60,6 +60,30 @@
                         {{ form.Number(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
+                <div class="form-group">
+					{{form.Profilephoto.label(class="form-control-label")}}
+					{% if warning %}
+					<p class="form-control-label" style = 'color:brown' >{{ warning }}</p>
+					{% endif %}
+					{% if filename %}
+						<p class="form-control-label">Uploaded file : {{filename }}</p>
+						{% endif %}
+					{% if form.Profilephoto.errors %}
+						{{form.Profilephoto(class="form-control form-control-lg is-invalid",label = 'Upload File')}}
+							<div class="invalid-feedback">
+								{% for error in form.Profilephoto.errors %}
+								 <span>{{error}}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{form.Profilephoto(class="form-control form-control-lg")}}
+							
+
+					{% endif %}
+                </div>
+                
+
                 
                 <div class="form-group">
                     {{ form.location.label(class="form-control-label") }}
@@ -74,21 +98,9 @@
                         {{ form.location(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.Profilephoto.label(class="form-control-label") }}
-                    {% if form.Profilephoto.errors %}
-                        {{ form.Profilephoto(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.Profilephoto.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.Profilephoto(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                </fieldset><br>
-                <fieldset class="form-group">
+
+                <br>
+                
                 <div class="form-group">
                     {{ form.CurrentJob.label(class="form-control-label") }}
                     {% if form.CurrentJob.errors %}
@@ -106,8 +118,8 @@
                     {{ form.Notworking(class="form-check-input") }}
                     {{ form.Notworking.label(class="form-check-label") }}
                 </div>
-                </fieldset><br>
-                <fieldset class="form-group">
+                <br>
+                
                 <div class="form-group">
                     {{ form.Linkedin.label(class="form-control-label") }}
                     {% if form.Linkedin.errors %}
@@ -148,8 +160,8 @@
                         {{ form.Instagram(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                </fieldset><br>
-                <fieldset class="form-group">
+                <br>
+                
                 <div class="form-group">
                     {{ form.MinFee.label(class="form-control-label") }}
                     {% if form.MinFee.errors %}
@@ -176,8 +188,8 @@
                         {{ form.MaxFee(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                </fieldset><br>
-                <fieldset class="form-group">
+                <br>
+                
                 <div class="form-group">
                     {{ form.FirstSpec.label(class="form-control-label") }}
                     {% if form.FirstSpec.errors %}
@@ -217,7 +229,7 @@
                         {{ form.ThirdSpec(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                </fieldset><br>
+                <br>
                 <div class="form-group">
                     {{ form.Educational_qualif_1.label(class="form-control-label") }}
                     {% if form.Educational_qualif_1.errors %}
@@ -229,6 +241,20 @@
                         </div>
                     {% else %}
                         {{ form.Educational_qualif_1(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.Educational_Institution_1.label(class="form-control-label") }}
+                    {% if form.Educational_Institution_1.errors %}
+                        {{ form.Educational_Institution_1(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Educational_Institution_1.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Educational_Institution_1(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -271,6 +297,19 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
+                    {{ form.Educational_Institution_2.label(class="form-control-label") }}
+                    {% if form.Educational_Institution_2.errors %}
+                        {{ form.Educational_Institution_2(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Educational_Institution_2.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Educational_Institution_2(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
                     {{ form.From_2.label(class="form-control-label") }}
                     {% if form.From_2.errors %}
                         {{ form.From_2(class="form-control form-control-lg is-invalid") }}
@@ -309,6 +348,22 @@
                         {{ form.Educational_qualif_3(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
+                <div class="form-group">
+                    {{ form.Educational_Institution_3.label(class="form-control-label") }}
+                    {% if form.Educational_Institution_3.errors %}
+                        {{ form.Educational_Institution_3(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Educational_Institution_3.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Educational_Institution_3(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
                 <div class="form-group">
                     {{ form.From_3.label(class="form-control-label") }}
                     {% if form.From_3.errors %}
@@ -348,8 +403,24 @@
                         {{ form.Prof_qualif_1(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
                 <div class="form-group">
-                    {{ form.From_prof_1.label(class="form-control-label") }}
+                    {{ form.Institution_1.label(class="form-control-label") }}
+                    {% if form.Institution_1.errors %}
+                        {{ form.Institution_1(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Institution_1.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Institution_1(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.From_prof_1.label(class ="form-control-label") }}
                     {% if form.From_prof_1.errors %}
                         {{ form.From_prof_1(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -386,6 +457,22 @@
                         {{ form.Prof_qualif_2(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
+                <div class="form-group">
+                    {{ form.Institution_2.label(class="form-control-label") }}
+                    {% if form.Institution_2.errors %}
+                        {{ form.Institution_2(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Institution_2.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Institution_2(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
                 <div class="form-group">
                     {{ form.From_prof_2.label(class="form-control-label") }}
                     {% if form.From_prof_2.errors %}
@@ -411,6 +498,7 @@
                     {% else %}
                         {{ form.To_prof_2(class="form-control form-control-lg") }}
                     {% endif %}</div>
+
                 <div class="form-group">
                     {{ form.Prof_qualif_3.label(class="form-control-label") }}
                     {% if form.Prof_qualif_3.errors %}
@@ -424,6 +512,22 @@
                         {{ form.Prof_qualif_3(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
+                <div class="form-group">
+                    {{ form.Institution_3.label(class="form-control-label") }}
+                    {% if form.Institution_3.errors %}
+                        {{ form.Institution_3(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Institution_3.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Institution_3(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
                 <div class="form-group">
                     {{ form.From_prof_3.label(class="form-control-label") }}
                     {% if form.From_prof_3.errors %}
@@ -451,10 +555,11 @@
                     {% endif %}</div>
                 
  
-            </fieldset>
+                </fieldset>
             <div class="form-group">
                 {{ form.Submit(class="btn btn-outline-info") }}
             </div>
+        
         </form>
     </div>
    

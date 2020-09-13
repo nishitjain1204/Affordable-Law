@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "./streams_err.py", line 5, in <module>
-    raise ValueError('Value Error Raised')
-ValueError: Value Error Raised
