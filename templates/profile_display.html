@@ -81,7 +81,7 @@
 									<br>
 									<ul class="list basic_info">
 										
-										<li><a href="#"><i class="lnr lnr-phone-handset"></i> 44 (012) 6954 783</a></li>
+										<li><a href="#"><i class="lnr lnr-phone-handset"></i> {{ lawyer.phone_number}}</a></li>
 										<li><a href="#"><i class="lnr lnr-envelope"></i>{{lawyer.email_id }}</a></li>
 										<li><a href="#"><i class="lnr lnr-home"></i> {{lawyer.city if lawyer.city}}</a></li>
 									</ul>
@@ -109,56 +109,42 @@
         
         <!--================Welcome Area =================-->
         <section class="welcome_area p_120">
-        	<div class="container">
+        	<div class="container-fluid">
         		<div class="row welcome_inner">
         			<div class="col-lg-6">
         				<div class="welcome_text">
 							{% if lawyer.bio %}
-        					<h4>About Myself</h4>
+        					<h4>About Me</h4>
 							<p>{{lawyer.bio }}</p>
 							{% endif %}
-        					<!-- <div class="row">
-        						<div class="col-md-4">
-        							<div class="wel_item">
-        								<i class="lnr lnr-database"></i>
-        								<h4>{{lawyer.specialization1 if lawyer.specialization1 }}</h4>
-        								
-        							</div>
-        						</div>
-        						<div class="col-md-4">
-        							<div class="wel_item">
-        								<i class="lnr lnr-book"></i>
-        								
-        								<h4>{{lawyer.specialization2 if lawyer.specialization2 }}</h4>
-        							</div>
-        						</div>
-        						<div class="col-md-4">
-        							<div class="wel_item">
-        								<i class="lnr lnr-users"></i>
-        								
-        								<h4>{{lawyer.specialization3 if lawyer.specialization3 }}</h4>
-        							</div>
-        						</div>
-        					</div> -->
+        					
         				</div>
         			</div>
-        			<div class="col-lg-6">
+        			<!-- <div class="col-lg-6"> -->
+						<div class = 'col-lg-6'>
 
-						<div class="col-md-4">
+							<div class="welcome_text">
+								<h4>I handle cases related to </h4>
+							</div>
+							<br>
+
+						<div class="col-sm">
 							<div class="wel_item">
 								<i class="lnr lnr-database"></i>
 								<h4>{{lawyer.specialization1 if lawyer.specialization1 }}</h4>
 								
 							</div>
 						</div>
-						<div class="col-md-4">
+						<br>
+						<div class="col-sm">
 							<div class="wel_item">
 								<i class="lnr lnr-book"></i>
 								
 								<h4>{{lawyer.specialization2 if lawyer.specialization2 }}</h4>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<br>
+						<div class=" col-sm">
 							<div class="wel_item">
 								<i class="lnr lnr-users"></i>
 								
