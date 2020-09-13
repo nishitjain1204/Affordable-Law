@@ -2,6 +2,7 @@ from flask import Flask, render_template,url_for,flash,redirect,session,sessions
 import os
 import re
 from flask_sqlalchemy import SQLAlchemy
+from PIL import Image
 # from sqlalchemy import exc
 from models import db ,Lawyer,Lawyer_case,Lawyer_prof_qualif_1,Lawyer_prof_qualif_2,Lawyer_prof_qualif_3 , Lawyer_educational_qualif_1,Lawyer_educational_qualif_2,Lawyer_educational_qualif_3
 from  werkzeug.security import generate_password_hash , check_password_hash
@@ -9,12 +10,23 @@ from flask_login import LoginManager , UserMixin , login_user , logout_user , lo
 from flask_login import login_user, current_user, logout_user, login_required
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 from werkzeug.utils import secure_filename
-app = Flask(__name__) # so that flask knows where to look for your templates and static foles
+app = Flask(__name__) 
+
+# so that flask knows where to look for your templates and static foles
 #we made an 'app' variable and set it to  an instance of the flask class
 #decorators are used to add functionality to ur already existing functions
 #routes are what we typw into our browser to go to diffwrent pages 
 #the route decorator shows us what would be shown on our website for that specific route
 
+# def image_cropper(image_file):
+# 	filename = image_file.filename
+# 	image = Image.open(image_file)
+# 	img = image.resize((668,690))
+# 	img.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+# 	return img
+	
+
+# required_dimesions = (668,690)
 #posts is a list of dictionaries
 #each dictionary represents a blog post
 
@@ -132,6 +144,7 @@ def profile(lawyer_id):
 		lawyer.max_fee= form.MaxFee.data
 		lawyer.phone_number = form.Number.data
 		profile_photo = form.Profilephoto.data
+		
 		print(type(profile_photo))
 
 		if profile_photo:
@@ -193,9 +206,11 @@ def profile(lawyer_id):
 			form.Educational_qualif_1.data = edu_qualif_1.educational_qualif
 			form.From_1.data = edu_qualif_1.from_
 			form.To_1.data = edu_qualif_1.to_
+			form.Educational_Institution_1.data = edu_qualif_1.educational_institute
 		
 		if edu_qualif_2:
 			form.Educational_qualif_2.data = edu_qualif_2.educational_qualif
+			form.Educational_Institution_2.data = edu_qualif_2.educational_institute
 			form.From_2.data = edu_qualif_2.from_
 			form.To_2.data = edu_qualif_2.to_
 		
@@ -203,11 +218,13 @@ def profile(lawyer_id):
 			form.Educational_qualif_3.data = edu_qualif_3.educational_qualif
 			form.From_3.data = edu_qualif_3.from_
 			form.To_3.data = edu_qualif_3.to_
+			form.Educational_Institution_3.data = edu_qualif_3.educational_institute
 		
 		if prof_qualif_1:
 			form.Prof_qualif_1.data = prof_qualif_1.prof_qualif
 			form.From_prof_1.data = prof_qualif_1.from_prof
 			form.To_prof_1.data = prof_qualif_1.to_prof
+			form.Institution_1.data = prof_qualif_1.prof_institute
 		
 
 		if prof_qualif_2:
@@ -215,12 +232,14 @@ def profile(lawyer_id):
 			form.Prof_qualif_2.data = prof_qualif_2.prof_qualif
 			form.From_prof_2.data = prof_qualif_2.from_prof
 			form.To_prof_2.data = prof_qualif_2.to_prof
+			form.Institution_2.data = prof_qualif_2.prof_institute
 		
 		if prof_qualif_3 :
 
 			form.Prof_qualif_3.data = prof_qualif_3.prof_qualif
 			form.From_prof_3.data = prof_qualif_3.from_prof
 			form.To_prof_3.data = prof_qualif_3.to_prof
+			form.Institution_3.data = prof_qualif_3.prof_institute
 		
 		
 
