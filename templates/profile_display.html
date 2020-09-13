@@ -1,4 +1,13 @@
 {% extends "layout.html" %}
+
+{% block account%}
+                <a class="nav-item nav-link" href="{{ url_for('profile',lawyer_id=current_user.id) }}">
+
+                    Update Profile
+                    
+                      
+                   </a>
+                {% endblock account%}
 {% block css %}
 <link rel="stylesheet" href="{{url_for('static', filename='profile/css/style.css')}}">
 <link rel="stylesheet" href="{{ url_for('static',filename='profile/css/responsive.css')}}"> 
