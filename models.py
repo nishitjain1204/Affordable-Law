@@ -14,15 +14,8 @@ class User(UserMixin, db.Model):
     # TODO: Define fields here
 
     id = db.Column(db.Integer , primary_key = True)
-    username = db.Column(db.String(50), nullable = False)
-    first_name = db.Column(db.String(50), nullable = False)
-    middle_name = db.Column(db.String(50), nullable = False)
-    last_name = db.Column(db.String(50), nullable = False)
-    age = db.Column(db.Integer , nullable = False)
+    username = db.Column(db.String(50), nullable = False,unique=True)
     email_id  = db.Column(db.String(200), nullable = False , unique = True)
-    address = db.Column(db.String(200), nullable = False)
-    city =  db.Column(db.String(50), nullable = False)
-    profile_photo = db.Column(db.Integer,db.ForeignKey('user_profile_pictures.id'))
     password =  db.Column(db.String(50), nullable = False)
 
 
@@ -126,6 +119,9 @@ class Lawyer_educational_qualif_3(db.Model):
     from_=db.Column(db.String(10))
     to_=db.Column(db.String(10))
     lawyer_id = db.Column(db.Integer , db.ForeignKey('lawyer.id')) 
+
+
+
 
 
 

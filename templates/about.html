@@ -68,7 +68,8 @@
 		<div class="card-body">
 		  <h5 class="card-title">In need of good lawyers ?</h5>
 		  <p class="card-text">We provide a portal where you can connect with the world's best legal minds while sitting at home</p>
-		  <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
+		  <form action="{{ url_for('userregister')}}" method="GET"> 
+		  <button type="submit" class="btn btn-lg btn-block btn-primary">Get started</button></form>
 		</div>
 	  </div>
 	</div><!-- <div class="card">

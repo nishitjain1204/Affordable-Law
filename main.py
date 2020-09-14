@@ -12,6 +12,8 @@ from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 from werkzeug.utils import secure_filename
 app = Flask(__name__) 
 
+#Added a line from live session 
+
 # so that flask knows where to look for your templates and static foles
 #we made an 'app' variable and set it to  an instance of the flask class
 #decorators are used to add functionality to ur already existing functions
@@ -37,11 +39,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.sqlite3'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif','.pdf','.txt','.doc','.docx','.jpeg']
 db.init_app(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
+lawyer_login_manager = LoginManager()
+lawyer_login_manager.init_app(app)
+lawyer_login_manager.login_view = 'login'
 
-@login_manager.user_loader
+@lawyer_login_manager.user_loader
 def load_lawyer(lawyer_id):
 	return Lawyer.query.get(int(lawyer_id))
 
@@ -68,6 +70,7 @@ post =[
 
 
 from lawyer_routes import *
+from user_routes import *
 
 if __name__=='__main__':
 	db.create_all(app=app)
@@ -77,3 +80,7 @@ if __name__=='__main__':
 #a block is the part which the child overrides
 #new function called url_for it will find the exact location for routes for us
 #the hidden_tag() and key helps with preventing attacks
+
+
+
+
