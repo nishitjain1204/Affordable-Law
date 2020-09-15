@@ -11,6 +11,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 from werkzeug.utils import secure_filename
 from main import app
+import flask_whooshalchemy as wa
+
+wa.whoosh_index(app,Lawyer)
 
 user_login_manager = LoginManager()
 user_login_manager.init_app(app)

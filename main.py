@@ -10,6 +10,7 @@ from flask_login import LoginManager , UserMixin , login_user , logout_user , lo
 from flask_login import login_user, current_user, logout_user, login_required
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 from werkzeug.utils import secure_filename
+
 app = Flask(__name__) 
 
 
@@ -20,7 +21,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.sqlite3' 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif','.pdf','.txt','.doc','.docx','.jpeg']
+app.config['WHOOSH_BASE'] = 'whoosh'
 db.init_app(app)
+
+
 
 
 

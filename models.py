@@ -33,6 +33,8 @@ class User(UserMixin, db.Model):
 
 
 class Lawyer(UserMixin,db.Model):
+    
+    __searchable__ = ['username','first_name','last_name','current_job','city','specialization1','specialization2','specialization3',] 
 
     id = db.Column(db.Integer , primary_key = True)
     username = db.Column(db.String(50), nullable = False)
