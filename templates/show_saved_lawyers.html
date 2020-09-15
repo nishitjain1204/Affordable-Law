@@ -1,0 +1,22 @@
+{% extends "user_layout.html" %}
+
+{% block content %}
+	
+		{% for lawyer in saved_lawyers %} 
+			
+			<article class="media content-section">
+				<div class="media-body">
+					<div class="article-metadata">
+						<h2><a class="mr-2" href="{{ url_for('show_profile',lawyer_id=lawyer.id) }}">{{ lawyer.username }}</a></h2>
+						<small class="text-muted">{{lawyer.current_job}}</small>
+					</div>
+					<p class="article-content">{{ lawyer.bio }}</p>
+					
+				</div>
+			</article>
+
+		{% endfor %} 
+
+	
+{% endblock content %}         
+

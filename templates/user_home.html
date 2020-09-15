@@ -11,7 +11,13 @@
 		</div>
 		<p class="article-content">{{ lawyer.bio }}</p>
 		<div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('save_lawyer',lawyer_id=lawyer.id)}}">Save</a>
+			{% if lawyer in saved_lawyers %}
+			
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('unsave_lawyer',lawyer_id=lawyer.id)}}">Unsave</a>
+			{% else %}
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('save_lawyer',lawyer_id=lawyer.id)}}">Save</a>
+			
+			{% endif %}
            
           </div>
 		

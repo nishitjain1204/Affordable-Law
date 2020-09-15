@@ -4,7 +4,7 @@ import re
 from flask_sqlalchemy import SQLAlchemy
 from PIL import Image
 # from sqlalchemy import exc
-from models import db ,Lawyer,Lawyer_case,Lawyer_prof_qualif_1,Lawyer_prof_qualif_2,Lawyer_prof_qualif_3 , Lawyer_educational_qualif_1,Lawyer_educational_qualif_2,Lawyer_educational_qualif_3,User
+from models import SavedLawyers,db ,Lawyer,Lawyer_case,Lawyer_prof_qualif_1,Lawyer_prof_qualif_2,Lawyer_prof_qualif_3 , Lawyer_educational_qualif_1,Lawyer_educational_qualif_2,Lawyer_educational_qualif_3,User
 from  werkzeug.security import generate_password_hash , check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
 from flask_login import login_user, current_user, logout_user, login_required
@@ -25,9 +25,15 @@ def load_user(user_id):
 @app.route('/userhome')
 @login_required
 def userhome():
-    free_lawyers = Lawyer.query.filter_by(open_for_cases=1).all()
-    
-    return render_template('user_home.html',free_lawyers=free_lawyers)
+	free_lawyers = Lawyer.query.filter_by(open_for_cases=1).all()
+	user_id = session['customer_id']
+	saved_lawyers_ids = SavedLawyers.query.filter_by(user_id=user_id).all()
+	saved_lawyers=[]
+	for lawyer_id in saved_lawyers_ids:
+		lawyer=Lawyer.query.filter_by(id=lawyer_id.lawyer_id).first()
+		saved_lawyers.append(lawyer)
+
+	return render_template('user_home.html',free_lawyers=free_lawyers,saved_lawyers=saved_lawyers)
 
 
 @app.route('/userregister',methods=['GET','POST'])
@@ -93,12 +99,41 @@ def show_profile(lawyer_id):
 @app.route('/save/<int:lawyer_id>')
 @login_required
 def save_lawyer(lawyer_id):
-	lawyer = Lawyer.query.filter_by(id=lawyer_id).first()
+    
 	user_id = session['customer_id']
-	user=User.query.filter_by(id=user_id)
-	user.saved_lawyers.append(lawyer)
-	db.session.commit()
+	saved_lawyer = SavedLawyers.query.filter_by(lawyer_id=lawyer_id,user_id=user_id).first()
+	if saved_lawyer:
+		return redirect(url_for('userhome'))
+	else:
+		saved_lawyer = SavedLawyers(lawyer_id=lawyer_id,user_id=user_id)
+		db.session.add(saved_lawyer)
+		db.session.commit()
 
-	return render_template(url_for('userhome'))
-    	
+	
+	return redirect(url_for('userhome'))
 
+
+@app.route('/savedlawyers')
+@login_required
+def savedlawyers():
+	free_lawyers = Lawyer.query.filter_by(open_for_cases=1).all()
+	user_id = session['customer_id']
+	saved_lawyers_ids = SavedLawyers.query.filter_by(user_id=user_id).all()
+	saved_lawyers=[]
+	for lawyer_id in saved_lawyers_ids:
+		lawyer=Lawyer.query.filter_by(id=lawyer_id.lawyer_id).first()
+		saved_lawyers.append(lawyer)
+
+	return render_template('show_saved_lawyers.html',saved_lawyers=saved_lawyers,free_lawyers=free_lawyers)
+
+
+@app.route('/unsave/<int:lawyer_id>',methods = ['GET','POST'])
+@login_required
+def unsave_lawyer(lawyer_id):
+	user_id = session['customer_id']
+	saved_lawyers_list = SavedLawyers.query.filter_by(user_id=user_id).all()
+	saved_lawyer = SavedLawyers.query.filter_by(user_id=user_id,lawyer_id=lawyer_id).first()
+	if saved_lawyer:
+		db.session.delete(saved_lawyer)
+		db.session.commit()
+	return redirect(url_for('userhome'))

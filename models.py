@@ -6,12 +6,14 @@ from flask_login import UserMixin
 # from main import app 
 db = SQLAlchemy()
 
-saved_lawyers = db.Table('saved_lawyers',
-        db.Column('id',db.Integer,primary_key=True),
-        db.Column('user_id',db.Integer,db.ForeignKey('user.id')),
-        db.Column('lawyer_id',db.Integer,db.ForeignKey('lawyer.id'))
 
-)
+
+class SavedLawyers(db.Model):
+    id=db.Column('id',db.Integer,primary_key=True)
+    user_id=db.Column('user_id',db.Integer,db.ForeignKey('user.id'))
+    lawyer_id = db.Column('lawyer_id',db.Integer,db.ForeignKey('lawyer.id'))
+        
+
 
 
 
@@ -24,7 +26,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), nullable = False,unique=True)
     email_id  = db.Column(db.String(200), nullable = False , unique = True)
     password =  db.Column(db.String(50), nullable = False)
-    saved_lawyers=db.relationship('Lawyer',secondary=saved_lawyers,backref=db.backref('saved_lawyers',lazy='dynamic'))
+    saved_lawyers=db.relationship('SavedLawyers',backref='user')
     
 
 
@@ -61,6 +63,7 @@ class Lawyer(UserMixin,db.Model):
     proffesional_qualif_1 = db.relationship('Lawyer_prof_qualif_1',uselist=False, backref = 'lawyer')
     proffesional_qualif_2 = db.relationship('Lawyer_prof_qualif_2', uselist=False,backref = 'lawyer')
     proffesional_qualif_3 = db.relationship('Lawyer_prof_qualif_3',uselist=False, backref = 'lawyer')
+    saved_lawyers=db.relationship('SavedLawyers',backref='lawyer')
    
 
 class User_profile_pictures(db.Model):
@@ -130,22 +133,3 @@ class Lawyer_educational_qualif_3(db.Model):
     from_=db.Column(db.String(10))
     to_=db.Column(db.String(10))
     lawyer_id = db.Column(db.Integer , db.ForeignKey('lawyer.id')) 
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-    
-
-
-
-
