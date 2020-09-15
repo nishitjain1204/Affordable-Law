@@ -1,6 +1,7 @@
 {% extends "user_layout.html" %}
 
 {% block content %}
+{% if free_lawyers %}
 	{% for lawyer in free_lawyers %} 
 	<article class="media content-section">
 	  <div class="media-body">
@@ -9,10 +10,17 @@
 	      <small class="text-muted">{{lawyer.current_job if lawyer.current_job}}</small>
 		</div>
 		<p class="article-content">{{ lawyer.bio }}</p>
+		<div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('save_lawyer',lawyer_id=lawyer.id)}}">Save</a>
+           
+          </div>
 		
 		
 	  </div>
 	</article>
 	{% endfor %} 
+	{% else %}
+	<h2>No lawyers present</h2>
+	{% endif %}
 {% endblock content %}         
 

@@ -3,7 +3,7 @@ import os
 import re
 from flask_sqlalchemy import SQLAlchemy
 from PIL import Image
-# from sqlalchemy import exc
+from sqlalchemy import exc
 from models import db ,Lawyer,Lawyer_case,Lawyer_prof_qualif_1,Lawyer_prof_qualif_2,Lawyer_prof_qualif_3 , Lawyer_educational_qualif_1,Lawyer_educational_qualif_2,Lawyer_educational_qualif_3
 from  werkzeug.security import generate_password_hash , check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
@@ -11,6 +11,14 @@ from flask_login import login_user, current_user, logout_user, login_required
 from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
 from werkzeug.utils import secure_filename
 from main import app
+
+lawyer_login_manager = LoginManager()
+lawyer_login_manager.init_app(app)
+lawyer_login_manager.login_view = 'login'
+
+@lawyer_login_manager.user_loader
+def load_lawyer(lawyer_id):
+	return Lawyer.query.get(int(lawyer_id))
 
 @app.route('/about')
 @app.route('/',methods=['GET','POST'])
@@ -33,11 +41,10 @@ def register():
 	form=RegistrationForm()
 	if form.validate_on_submit():
 		hashed_password = generate_password_hash(form.password.data , method='sha256')
-		try:
-			new_user = Lawyer(username=form.username.data , email_id = form.email.data  , password = hashed_password)
-			db.session.add(new_user)
-		except exc.SQLAlchemyError as e :
-			return "<h1>{{ e }}</h1>"
+		
+		new_user = Lawyer(username=form.username.data , email_id = form.email.data  , password = hashed_password)
+		db.session.add(new_user)
+		
 		
 		db.session.commit()
 		flash('Registration Successfull','success')

@@ -27,7 +27,7 @@ def load_user(user_id):
 def userhome():
     free_lawyers = Lawyer.query.filter_by(open_for_cases=1).all()
     
-    return render_template('user_home.html',title='userHOME',free_lawyers=free_lawyers)
+    return render_template('user_home.html',free_lawyers=free_lawyers)
 
 
 @app.route('/userregister',methods=['GET','POST'])
@@ -35,11 +35,9 @@ def userregister():
 	form=RegistrationForm()
 	if form.validate_on_submit():
 		hashed_password = generate_password_hash(form.password.data , method='sha256')
-		try:
-			new_user = User(username=form.username.data , email_id = form.email.data  , password = hashed_password)
-			db.session.add(new_user)
-		except exc.SQLAlchemyError as e :
-			return "<h1>{{ e }}</h1>"
+	
+		new_user = User(username=form.username.data , email_id = form.email.data  , password = hashed_password)
+		db.session.add(new_user)
 		
 		db.session.commit()
 		flash('Registration Successfull','success')
@@ -69,7 +67,7 @@ def userlogin():
 	return render_template('userlogin.html',title='login',form=form)
 
 
-@app.route("/logout")
+@app.route("/userlogout")
 @login_required
 def userlogout():
     logout_user()
@@ -78,6 +76,7 @@ def userlogout():
 
 
 @app.route('/show_profile/<int:lawyer_id>',methods=['GET'])
+@login_required
 def show_profile(lawyer_id):
 	lawyer=Lawyer.query.filter_by(id=lawyer_id).first()
 	edu_qualif_1=Lawyer_educational_qualif_1.query.filter_by(lawyer_id=lawyer.id).first()
@@ -91,5 +90,15 @@ def show_profile(lawyer_id):
 	return render_template ('show_lawyer_profile.html',lawyer=lawyer,edu_qualif_1=edu_qualif_1,edu_qualif_2=edu_qualif_2,edu_qualif_3=edu_qualif_3,prof_qualif_1 = prof_qualif_1,prof_qualif_2 =prof_qualif_2,prof_qualif_3 =prof_qualif_3)
  
 
+@app.route('/save/<int:lawyer_id>')
+@login_required
+def save_lawyer(lawyer_id):
+	lawyer = Lawyer.query.filter_by(id=lawyer_id).first()
+	user_id = session['customer_id']
+	user=User.query.filter_by(id=user_id)
+	user.saved_lawyers.append(lawyer)
+	db.session.commit()
 
+	return render_template(url_for('userhome'))
+    	
 
