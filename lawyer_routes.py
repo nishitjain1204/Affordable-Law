@@ -8,7 +8,7 @@ from models import db ,Lawyer,Lawyer_case,Lawyer_prof_qualif_1,Lawyer_prof_quali
 from  werkzeug.security import generate_password_hash , check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , logout_user , login_required , current_user
 from flask_login import login_user, current_user, logout_user, login_required
-from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm
+from forms import RegistrationForm,LoginForm,ProfileForm,CaseForm,SearchForm
 from werkzeug.utils import secure_filename
 from main import app
 
@@ -28,12 +28,15 @@ def about():
     # you could do return '''<!doctype html>
     #<html code here>'''
 
-@app.route('/home')
+@app.route('/home',methods=['GET','POST'])
 @login_required
 def home():
-    user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
+	user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
+	searchform = SearchForm()
+	if searchform.validate_on_submit():
+		return redirect(url_for('casesearch',query=searchform.searchinput.data))
     
-    return render_template('home.html',title='HOME',user_cases=user_cases)
+	return render_template('home.html',title='HOME',user_cases=user_cases,searchform=searchform)
 
 
 @app.route('/register',methods=['GET','POST'])
@@ -222,6 +225,10 @@ def profile_display(lawyer_id):
 @login_required
 def cases():
 	form=CaseForm()
+	# searchform = SearchForm()
+	# if searchform.validate_on_submit():
+	# 	return redirect(url_for('casesearch',query=searchform.searchinput.data))
+
 	if form.validate_on_submit():
 		name = form.Name.data
 		day = form.Day.data
@@ -254,12 +261,19 @@ def cases():
 
 @app.route('/case_display/<int:case_id>')
 def case_display(case_id):
+	searchform = SearchForm()
+	if searchform.validate_on_submit():
+		return redirect(url_for('casesearch',query=searchform.searchinput.data))
 	case=Lawyer_case.query.get_or_404(case_id)
-	return render_template('case_display.html',case=case)
+	return render_template('case_display.html',case=case,searchform=searchform)
 
 @app.route('/case_display/<int:case_id>/update', methods = ['GET','POST'])
 @login_required
 def case_update(case_id):
+	searchform = SearchForm()
+	if searchform.validate_on_submit():
+		return redirect(url_for('casesearch',query=searchform.searchinput.data))
+
 	case=Lawyer_case.query.get_or_404(case_id)
 	if case.lawyer_id != session['user_id']:
 		abort(403)
@@ -298,7 +312,7 @@ def case_update(case_id):
     	
 		
 		
-	return render_template('case.html',title='UPDATE CASE',form=form,legend='UPDATE CASE',warning='this will overwrite the previously uploaded file')
+	return render_template('case.html',title='UPDATE CASE',form=form,legend='UPDATE CASE',warning='this will overwrite the previously uploaded file',searchform=searchform)
 
 @app.route('/case_display/<int:case_id>/delete', methods = ['POST'])
 @login_required
@@ -317,32 +331,35 @@ def logout():
     logout_user()
     return redirect(url_for('about'))
 
-@app.route("/account")
+
+
+
+
+@app.route('/caseearch/<query>',methods=['GET','POST'])
 @login_required
-def account():
+def casesearch(query):
+	searchform = SearchForm()
+	if searchform.validate_on_submit():
+		return redirect(url_for('casesearch',query=searchform.searchinput.data))
 
-    return '''
-	{% extends layout.html %}
-	{% block content %}
-	<h1> Account page </h1>
-	{% endblock content %}
+	user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
+	print(query)
 
+	searched_cases= []
+	for case in user_cases :
+		if query in case.name:
+			searched_cases.append(case)
+		elif query in case.day :
+			searched_cases.append(case)
+		elif query in case.month :
+			searched_cases.append(case)
+		elif query in case.year:
+			searched_cases.append(case)
+		elif query in case.bio :
+			searched_cases.append(case)
+		
+			
+    		
 
-	'''
-    
- 
+	return render_template('show_searched_cases.html',searched_cases=searched_cases,searchform=searchform)
 
-
-#@app.route('/profile')
-#def profile():
-#	form=ProfileForm()
-#		if form.validate_on_submit():
-#			flash(f'Profile created for {form.FirstName.data}','success')
-#			return redirect(url_for('home'))
-#	return render_template('profile.html',title='profile',form=form)
-
-
-
- #while setting environment variable whatever you type 
- #at like app=Flask(__name__) .. then FLASK_APP
- # if its a=Flask(__name__) .. then FLASK_A

@@ -34,10 +34,24 @@
 	        <!-- Navbar Right Side -->
 	        <div class="navbar-nav">
             <nav>
-              <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+              {% if searchform %}
+              <form class="form-inline" method="POST" action="">
+                {{searchform.hidden_tag()}}
+                
+                <div class="bg-light rounded rounded-pill shadow-sm mb-1">
+                  <div class="input-group">
+                    {{ searchform.searchinput( class="form-control border-0 bg-transparent") }}
+                    <div class="input-group-append">
+                      {{searchform.submit(button_id="button-addon1", type="submit" ,class="btn text-primary")}}
+                    </div>
+
+                  </div>
+
+
+                </div>
+              
               </form>
+            {% endif %}
             </nav>
 	          {% if current_user.is_authenticated %}
                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
