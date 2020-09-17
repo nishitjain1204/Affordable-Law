@@ -80,3 +80,9 @@ class CaseForm(FlaskForm):
 	Bio=StringField('Summary of case ', validators=[DataRequired(),Length(min=2,max=200)])
 	case_file = FileField('Case File')
 	submit=SubmitField()
+
+class SearchForm(FlaskForm):
+	searchinput= StringField('Search')
+	submit=SubmitField('🔍')
+	
+
