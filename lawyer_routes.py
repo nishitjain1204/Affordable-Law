@@ -44,6 +44,17 @@ def register():
 	form=RegistrationForm()
 	if form.validate_on_submit():
 		hashed_password = generate_password_hash(form.password.data , method='sha256')
+		existing_lawyers = Lawyer.query.all()
+		for lawyer in existing_lawyers:
+			
+			if form.email.data == lawyer.email_id :
+				flash('Email already taken . Please try again .','danger')
+				return redirect(url_for('register'))
+			elif form.username.data == lawyer.username :
+				flash('Username already taken. Please try again .','danger')
+				return redirect(url_for('register'))
+
+    			
 		
 		new_user = Lawyer(username=form.username.data , email_id = form.email.data  , password = hashed_password)
 		db.session.add(new_user)
@@ -80,8 +91,13 @@ def login():
 @login_required
 def profile(lawyer_id):
 	lawyer=Lawyer.query.filter_by(id=lawyer_id).first()
+	existing_lawyers = Lawyer.query.all()
 	form = ProfileForm()
 	if form.validate_on_submit():
+    	
+		for the_lawyer in existing_lawyers:
+			if the_lawyer.phone_number == form.Number.data and the_lawyer.id != lawyer_id :
+				return redirect(url_for('profile',lawyer_id=session['user_id']))
 		
 		lawyer.first_name = form.FirstName.data
 		lawyer.last_name = form.LastName.data
@@ -111,8 +127,7 @@ def profile(lawyer_id):
 					abort(400)
 				profile_photo.save(os.path.join(app.config['UPLOAD_FOLDER'], profile_photo_name))
 				lawyer.profile_photo = url_for('static',filename='uploads/'+profile_photo_name)
-		else:
-			lawyer.profile_photo = None
+		
 		
 		educational_qualif_1 = Lawyer_educational_qualif_1(educational_qualif=form.Educational_qualif_1.data, educational_institute=form.Educational_Institution_1.data,from_=form.From_1.data,to_=form.To_1.data,lawyer=lawyer)
 		db.session.add(educational_qualif_1)
