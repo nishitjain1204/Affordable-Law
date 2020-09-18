@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 
 
-SECRET_KEY = os.urandom(32)
+SECRET_KEY = 'theSecretKey'
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.sqlite3' 
