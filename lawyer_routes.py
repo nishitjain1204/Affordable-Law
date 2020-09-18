@@ -45,14 +45,15 @@ def register():
 	if form.validate_on_submit():
 		hashed_password = generate_password_hash(form.password.data , method='sha256')
 		existing_lawyers = Lawyer.query.all()
-		for lawyer in existing_lawyers:
-			
-			if form.email.data == lawyer.email_id :
-				flash('Email already taken . Please try again .','danger')
-				return redirect(url_for('register'))
-			elif form.username.data == lawyer.username :
-				flash('Username already taken. Please try again .','danger')
-				return redirect(url_for('register'))
+		if existing_lawyers:
+			for lawyer in existing_lawyers:
+				
+				if form.email.data == lawyer.email_id :
+					flash('Email already taken . Please try again .','danger')
+					return redirect(url_for('register'))
+				elif form.username.data == lawyer.username :
+					flash('Username already taken. Please try again .','danger')
+					return redirect(url_for('register'))
 
     			
 		
