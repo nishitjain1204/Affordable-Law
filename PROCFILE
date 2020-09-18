@@ -1,1 +1,2 @@
-web : gunicorn main : app
+#filename: Procfile
+web: gunicorn runserver:main --log-file=-
