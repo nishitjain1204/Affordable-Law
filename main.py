@@ -18,7 +18,9 @@ app = Flask(__name__)
 SECRET_KEY = 'theSecretKey'
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.sqlite3' 
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.sqlite3' 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or "sqlite:///app.db"
+
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif','.pdf','.txt','.doc','.docx','.jpeg']
 app.config['WHOOSH_BASE'] = 'whoosh'

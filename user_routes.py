@@ -19,6 +19,7 @@ user_login_manager = LoginManager()
 user_login_manager.init_app(app)
 user_login_manager.login_view = 'userlogin'
 
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or "sqlite:///" + os.path.join(basedir, "app.db") 
 
 
 @user_login_manager.user_loader
