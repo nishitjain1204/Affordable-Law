@@ -1,2 +1,2 @@
 #filename: Procfile
-web: gunicorn runserver:main --log-file=-
+web: python3 main.py
