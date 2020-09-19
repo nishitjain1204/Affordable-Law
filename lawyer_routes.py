@@ -28,7 +28,7 @@ def about():
     # you could do return '''<!doctype html>
     #<html code here>'''
 
-@app.route('/home',methods=['GET','POST'])
+@app.route('/home/',methods=['GET','POST'])
 @login_required
 def home():
 	user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
@@ -39,7 +39,7 @@ def home():
 	return render_template('home.html',title='HOME',user_cases=user_cases,searchform=searchform)
 
 
-@app.route('/register',methods=['GET','POST'])
+@app.route('/register/',methods=['GET','POST'])
 def register():
 	form=RegistrationForm()
 	if form.validate_on_submit():
@@ -66,7 +66,7 @@ def register():
 		return redirect(url_for('login'))
 	return render_template('Registrationform.html',title='register',form=form)
 
-@app.route('/login',methods=['GET','POST'])
+@app.route('/login/',methods=['GET','POST'])
 def login():
 	form=LoginForm()
 	if form.validate_on_submit():
@@ -237,7 +237,7 @@ def profile_display(lawyer_id):
 	return render_template ('profile_display.html',lawyer=lawyer,edu_qualif_1=edu_qualif_1,edu_qualif_2=edu_qualif_2,edu_qualif_3=edu_qualif_3,prof_qualif_1 = prof_qualif_1,prof_qualif_2 =prof_qualif_2,prof_qualif_3 =prof_qualif_3)
  
 
-@app.route('/cases',methods=['GET','POST'])
+@app.route('/cases/',methods=['GET','POST'])
 @login_required
 def cases():
 	form=CaseForm()
@@ -330,7 +330,7 @@ def case_update(case_id):
 		
 	return render_template('case.html',title='UPDATE CASE',form=form,legend='UPDATE CASE',warning='this will overwrite the previously uploaded file',searchform=searchform)
 
-@app.route('/case_display/<int:case_id>/delete', methods = ['POST'])
+@app.route('/case_display/<int:case_id>/delete/', methods = ['POST'])
 @login_required
 def delete_case(case_id):
 	case=Lawyer_case.query.get_or_404(case_id)
@@ -341,7 +341,7 @@ def delete_case(case_id):
 	flash('Your case has been deleted ','success')
 	return redirect(url_for('home'))
 
-@app.route("/logout")
+@app.route("/logout/")
 @login_required
 def logout():
     logout_user()

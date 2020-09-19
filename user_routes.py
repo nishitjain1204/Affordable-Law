@@ -28,7 +28,7 @@ def load_user(user_id):
 
 
 
-@app.route('/userhome',methods=['GET','POST'])
+@app.route('/userhome/',methods=['GET','POST'])
 @login_required
 def userhome():
 	searchform = SearchForm()
@@ -45,7 +45,7 @@ def userhome():
 	return render_template('user_home.html',free_lawyers=free_lawyers,saved_lawyers=saved_lawyers,searchform=searchform)
 
 
-@app.route('/userregister',methods=['GET','POST'])
+@app.route('/userregister/',methods=['GET','POST'])
 def userregister():
 	form=RegistrationForm()
 	if form.validate_on_submit():
@@ -59,7 +59,7 @@ def userregister():
 		return redirect(url_for('userlogin'))
 	return render_template('user_Registrationform.html',title='register',form=form)
 
-@app.route('/userlogin',methods=['GET','POST'])
+@app.route('/userlogin/',methods=['GET','POST'])
 def userlogin():
 	form=LoginForm()
 	if form.validate_on_submit():
@@ -82,7 +82,7 @@ def userlogin():
 	return render_template('userlogin.html',title='login',form=form)
 
 
-@app.route("/userlogout")
+@app.route("/userlogout/")
 @login_required
 def userlogout():
     logout_user()
@@ -108,7 +108,7 @@ def show_profile(lawyer_id):
 	return render_template ('show_lawyer_profile.html',lawyer=lawyer,edu_qualif_1=edu_qualif_1,edu_qualif_2=edu_qualif_2,edu_qualif_3=edu_qualif_3,prof_qualif_1 = prof_qualif_1,prof_qualif_2 =prof_qualif_2,prof_qualif_3 =prof_qualif_3,searchform=searchform )
  
 
-@app.route('/save/<int:lawyer_id>')
+@app.route('/save/<int:lawyer_id>/')
 @login_required
 def save_lawyer(lawyer_id):
     
@@ -125,7 +125,7 @@ def save_lawyer(lawyer_id):
 	return redirect(url_for('userhome'))
 
 
-@app.route('/savedlawyers',methods=['GET','POST'])
+@app.route('/savedlawyers/',methods=['GET','POST'])
 @login_required
 def savedlawyers():
 	searchform = SearchForm()
@@ -142,7 +142,7 @@ def savedlawyers():
 	return render_template('show_saved_lawyers.html',saved_lawyers=saved_lawyers,free_lawyers=free_lawyers,searchform=searchform)
 
 
-@app.route('/unsave/<int:lawyer_id>',methods = ['GET','POST'])
+@app.route('/unsave/<int:lawyer_id>/',methods = ['GET','POST'])
 @login_required
 def unsave_lawyer(lawyer_id):
 	user_id = session['customer_id']
