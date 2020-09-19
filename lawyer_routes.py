@@ -286,9 +286,9 @@ def case_display(case_id):
 @app.route('/case_display/<int:case_id>/update', methods = ['GET','POST'])
 @login_required
 def case_update(case_id):
-	searchform = SearchForm()
-	if searchform.validate_on_submit():
-		return redirect(url_for('casesearch',query=searchform.searchinput.data))
+	# searchform = SearchForm()
+	# if searchform.validate_on_submit():
+	# 	return redirect(url_for('casesearch',query=searchform.searchinput.data))
 
 	case=Lawyer_case.query.get_or_404(case_id)
 	if case.lawyer_id != session['user_id']:
@@ -328,7 +328,7 @@ def case_update(case_id):
     	
 		
 		
-	return render_template('case.html',title='UPDATE CASE',form=form,legend='UPDATE CASE',warning='this will overwrite the previously uploaded file',searchform=searchform)
+	return render_template('case.html',title='UPDATE CASE',form=form,legend='UPDATE CASE',warning='this will overwrite the previously uploaded file')
 
 @app.route('/case_display/<int:case_id>/delete/', methods = ['POST'])
 @login_required
