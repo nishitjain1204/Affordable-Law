@@ -241,9 +241,9 @@ def profile_display(lawyer_id):
 @login_required
 def cases():
 	form=CaseForm()
-	# searchform = SearchForm()
-	# if searchform.validate_on_submit():
-	# 	return redirect(url_for('casesearch',query=searchform.searchinput.data))
+	searchform = SearchForm()
+	if searchform.validate_on_submit():
+		return redirect(url_for('casesearch',query=searchform.searchinput.data))
 
 	if form.validate_on_submit():
 		name = form.Name.data
@@ -275,7 +275,7 @@ def cases():
 	return render_template('case.html',title='case',form=form , legend='NEW CASE')
 	
 
-@app.route('/case_display/<int:case_id>')
+@app.route('/case_display/<int:case_id>',methods=['GET','POST'])
 def case_display(case_id):
 	searchform = SearchForm()
 	if searchform.validate_on_submit():
@@ -351,12 +351,13 @@ def logout():
 
 
 
-@app.route('/caseearch/<query>',methods=['GET','POST'])
+@app.route('/casesearch/<query>',methods=['GET','POST'])
 @login_required
 def casesearch(query):
 	searchform = SearchForm()
 	if searchform.validate_on_submit():
 		return redirect(url_for('casesearch',query=searchform.searchinput.data))
+	
 
 	user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
 	print(query)
