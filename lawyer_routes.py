@@ -41,13 +41,14 @@ def home():
 
 @app.route('/register/',methods=['GET','POST'])
 def register():
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
 	form=RegistrationForm()
 	if form.validate_on_submit():
 		hashed_password = generate_password_hash(form.password.data , method='sha256')
 		existing_lawyers = Lawyer.query.all()
 		if existing_lawyers:
 			for lawyer in existing_lawyers:
-				
 				if form.email.data == lawyer.email_id :
 					flash('Email already taken . Please try again .','danger')
 					return redirect(url_for('register'))
