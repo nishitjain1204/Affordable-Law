@@ -357,8 +357,7 @@ def logout():
 def casesearch(query):
 	searchform = SearchForm()
 	if searchform.validate_on_submit():
-		return redirect(url_for('casesearch',query=searchform.searchinput.data))
-	
+		return redirect(url_for('casesearch',query=searchform.searchinput.data.strip()))
 
 	user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
 	print(query)
