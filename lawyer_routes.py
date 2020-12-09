@@ -242,6 +242,9 @@ def profile_display(lawyer_id):
 @login_required
 def cases():
 	form=CaseForm()
+	searchform = SearchForm()
+	if searchform.validate_on_submit():
+		return redirect(url_for('casesearch',query=searchform.searchinput.data))
 
 	if form.validate_on_submit():
 		name = form.Name.data
