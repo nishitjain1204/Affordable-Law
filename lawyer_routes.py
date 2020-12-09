@@ -29,7 +29,7 @@ def about():
     #<html code here>'''
 
 @app.route('/home/',methods=['GET','POST'])
-# @login_required
+@login_required
 def home():
 	user_cases = Lawyer_case.query.filter_by(lawyer_id=session['user_id'])
 	searchform = SearchForm()
